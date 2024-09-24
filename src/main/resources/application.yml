@@ -1,1 +1,11 @@
-spring.application.name=evawova-mynews-service
+spring:
+    profiles:
+        active: dev
+    application:
+        name: mynews-service
+    jpa:
+        hibernate:
+            ddl-auto: validate
+        defer-datasource-initialization: false
+        show-sql: true
+        open-in-view: false
