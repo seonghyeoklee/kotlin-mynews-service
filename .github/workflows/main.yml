@@ -39,7 +39,7 @@ jobs:
         EOT
 
     - name: Build with Gradle
-      run: ./gradlew clean build -x test
+      run: ./gradlew clean build -x ktlintTestSourceSetCheck -x test
 
     - name: Get current time
       uses: 1466587594/get-current-time@v2

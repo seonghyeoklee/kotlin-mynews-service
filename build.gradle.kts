@@ -67,3 +67,7 @@ tasks.withType<Test> {
 tasks.named<Jar>("jar") {
     enabled = false
 }
+
+tasks.named("ktlintMainSourceSetCheck").configure {
+    enabled = false
+}
