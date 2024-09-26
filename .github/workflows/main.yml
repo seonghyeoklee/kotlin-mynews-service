@@ -36,6 +36,12 @@ jobs:
             port: 465
             username: ${{ secrets.GMAIL }}
             password: ${{ secrets.GMAIL_PASSWORD }}
+        naver:
+          api:
+            client-id: ${{ secrets.NAVER_CLIENT_ID }}
+            client-secret: ${{ secrets.NAVER_CLIENT_SECRET }}
+        auth:
+          api-key: ${{ secrets.AUTH_API_KEY }}
         EOT
 
     - name: Build with Gradle
@@ -62,7 +68,7 @@ jobs:
         aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
         aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
         region: ${{ env.AWS_REGION }}
-        application_name: dev-my-news
-        environment_name: Dev-my-news-env
+        application_name: evawova-my-news
+        environment_name: Evawova-my-news-env
         version_label: github-action-${{steps.current-time.outputs.formattedTime}}
         deployment_package: deploy/deploy.zip
