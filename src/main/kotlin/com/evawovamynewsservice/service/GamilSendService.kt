@@ -1,5 +1,6 @@
 package com.evawovamynewsservice.service
 
+import com.evawovamynewsservice.domain.News
 import jakarta.mail.internet.MimeMessage
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
@@ -7,6 +8,8 @@ import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @Service
 class GamilSendService(
@@ -17,14 +20,17 @@ class GamilSendService(
     override fun sendEmail(
         to: String,
         subject: String,
+        newsList: List<News>,
     ) {
         val message: MimeMessage = javaMailSender.createMimeMessage()
         val helper = MimeMessageHelper(message, true, "UTF-8")
 
-        // TODO 이메일 템플릿 수정
         val context = Context()
-        context.setVariable("name", "홍길동")
-        context.setVariable("newsTitle", "오늘의 뉴스")
+        context.setVariable("newsList", newsList)
+        context.setVariable(
+            "updateDate",
+            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+        )
 
         val htmlContent = templateEngine.process("emailTemplate.html", context)
 

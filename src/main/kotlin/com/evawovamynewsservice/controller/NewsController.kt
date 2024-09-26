@@ -41,4 +41,13 @@ class NewsController(
 
         return ResponseEntity.ok(pageNews.map { it.toResponse() })
     }
+
+    @GetMapping("/news/search")
+    fun getSearchNews(
+        @Parameter(hidden = true) pageable: Pageable,
+        @Parameter(description = "검색어", required = true) search: String,
+    ) {
+        newsService.sendNews("dltjdgur327@gmail.com", "테스트 이메일", search)
+        newsService.sendNews("unin0882@gmail.com", "테스트 이메일", search)
+    }
 }

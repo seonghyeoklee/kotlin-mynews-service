@@ -7,7 +7,9 @@ data class NewsDto(
     val id: Long,
     val title: String,
     val link: String,
-    val searchKeyword: String,
+    val originalLink: String,
+    val description: String,
+    val pubDate: String,
     val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime,
 )
@@ -17,7 +19,9 @@ fun News.toDto() =
         id = id,
         title = title,
         link = link,
-        searchKeyword = searchKeyword,
+        originalLink = originalLink,
+        description = description,
+        pubDate = pubDate,
         createdAt = createdAt,
         updatedAt = updatedAt,
     )

@@ -1,10 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>News Update</title>
-    </head>
-    <body>
-        <h1 th:text="'Hello, ' + ${name} + '!'"></h1>
-        <p th:text="'Here is your latest news: ' + ${newsTitle}"></p>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional News Update</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 24px;
+            text-align: center;
+            color: #343a40;
+            margin-bottom: 20px;
+        }
+        .news-item {
+            background-color: #f1f3f5;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border: 1px solid #dee2e6;
+        }
+        .update-date {
+            text-align: right;
+            font-size: 10px;
+            color: #777;
+            margin-top: -10px;
+            margin-bottom: 20px;
+        }
+        .news-item a {
+            text-decoration: none;
+            color: #495057;
+            font-weight: bold;
+        }
+        .news-item a:hover {
+            color: #007bff;
+        }
+        .description {
+            color: #6c757d;
+            margin-top: 10px;
+            font-size: 12px;
+        }
+        .news-meta {
+            font-size: 12px;
+            color: #777;
+            margin-top: 10px;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #adb5bd;
+            font-size: 12px;
+        }
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>My News</h1>
+    <p class="update-date">Updated: <span th:text="${updateDate}"></span></p>
+
+    <div th:each="news : ${newsList}">
+        <div class="news-item">
+            <p><a th:href="${news.link}" th:utext="${news.title}"></a></p>
+            <p class="description" th:utext="${news.description}"></p>
+            <p class="news-meta">Original Link: <a th:href="${news.originalLink}" th:text="${news.originalLink}"></a></p>
+            <p class="news-meta">Published on: <span th:text="${news.pubDate}"></span></p>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <p>&copy; 2024 My News Service. All rights reserved.</p>
+    <p><a href="#">Contact Us</a></p>
+</div>
+</body>
 </html>

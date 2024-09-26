@@ -10,7 +10,9 @@ import jakarta.persistence.Id
 class News(
     title: String,
     link: String,
-    searchKeyword: String,
+    originalLink: String,
+    description: String,
+    pubDate: String,
 ) : BaseEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +27,14 @@ class News(
         protected set
 
     @Column(nullable = false)
-    var searchKeyword: String = searchKeyword
+    var originalLink: String = originalLink
+        protected set
+
+    @Column(nullable = false)
+    var description: String = description
+        protected set
+
+    @Column(nullable = false)
+    var pubDate: String = pubDate
         protected set
 }

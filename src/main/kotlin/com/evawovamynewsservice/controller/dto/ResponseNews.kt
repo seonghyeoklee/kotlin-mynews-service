@@ -11,8 +11,12 @@ data class ResponseNews(
     val title: String,
     @Schema(description = "뉴스 링크")
     val link: String,
-    @Schema(description = "검색어")
-    val searchKeyword: String,
+    @Schema(description = "원본 뉴스 링크")
+    val originalLink: String,
+    @Schema(description = "뉴스 설명")
+    val description: String,
+    @Schema(description = "뉴스 발행일")
+    val pubDate: String,
     @Schema(description = "생성 일시")
     val createdAt: LocalDateTime,
     @Schema(description = "수정 일시")
@@ -24,7 +28,9 @@ fun NewsDto.toResponse() =
         id = id,
         title = title,
         link = link,
-        searchKeyword = searchKeyword,
+        originalLink = originalLink,
+        description = description,
+        pubDate = pubDate,
         createdAt = createdAt,
         updatedAt = updatedAt,
     )
