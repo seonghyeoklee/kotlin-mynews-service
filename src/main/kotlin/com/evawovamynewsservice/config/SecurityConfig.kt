@@ -19,6 +19,8 @@ class SecurityConfig {
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             }.authorizeHttpRequests { requests ->
                 requests
+                    .requestMatchers("/google/form/submit")
+                    .permitAll()
                     .anyRequest()
                     .authenticated()
             }.addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter::class.java)
