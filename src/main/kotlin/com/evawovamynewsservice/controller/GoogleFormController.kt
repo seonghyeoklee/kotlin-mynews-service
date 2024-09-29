@@ -1,5 +1,6 @@
 package com.evawovamynewsservice.controller
 
+import com.evawovamynewsservice.service.GoogleFormService
 import com.evawovamynewsservice.utils.logger
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationContext
@@ -13,13 +14,15 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/google/form")
-class GoogleFormController {
+class GoogleFormController(
+    private val googleFormService: GoogleFormService,
+) {
     @PostMapping("/submit")
     fun submitForm(
         @RequestBody formData: GoogleFormData,
-    ): String {
+    )  {
         logger().info(formData.toString())
-        return "Form data received successfully"
+        googleFormService.saveGoogleForm(formData)
     }
 }
 
@@ -27,10 +30,10 @@ data class GoogleFormData(
     val formId: String,
     val formTitle: String,
     val email: String,
-    val results: List<FormResult>,
+    val results: List<GoogleFormResult>,
 )
 
-data class FormResult(
+data class GoogleFormResult(
     val id: Int,
     val type: String,
     val title: String,
@@ -50,7 +53,6 @@ sealed class Response {
     object EmptyResponse : Response()
 }
 
-// 커스텀 Deserializer 정의
 class ResponseDeserializer : JsonDeserializer<Response>() {
     override fun deserialize(
         parser: JsonParser,
