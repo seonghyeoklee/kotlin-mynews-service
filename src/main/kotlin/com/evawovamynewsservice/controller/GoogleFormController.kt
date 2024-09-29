@@ -11,23 +11,35 @@ import org.springframework.web.bind.annotation.RestController
 class GoogleFormController {
     @PostMapping("/submit")
     fun submitForm(
-        @RequestBody formData: GoogleForm,
+        @RequestBody formData: GoogleFormData,
     ): String {
         logger().info(formData.toString())
         return "Form data received successfully"
     }
 }
 
-data class GoogleForm(
+data class GoogleFormData(
     val formId: String,
     val formTitle: String,
     val email: String,
-    val results: GoogleFormData,
+    val results: List<FormResult>,
 )
 
-data class GoogleFormData(
-    val id: String,
+data class FormResult(
+    val id: Int,
     val type: String,
     val title: String,
-    val response: String,
+    val response: Response,
 )
+
+sealed class Response {
+    data class TextResponse(
+        val response: String,
+    ) : Response()
+
+    data class CheckboxResponse(
+        val response: List<String>,
+    ) : Response()
+
+    object EmptyResponse : Response()
+}
