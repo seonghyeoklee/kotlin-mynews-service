@@ -37,11 +37,12 @@ data class FormResult(
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
-    property = "type", // JSON에 추가로 타입 정보를 포함할 필드
+    property = "type",
 )
 @JsonSubTypes(
     JsonSubTypes.Type(value = Response.TextResponse::class, name = "TEXT"),
     JsonSubTypes.Type(value = Response.CheckboxResponse::class, name = "CHECKBOX"),
+    JsonSubTypes.Type(value = Response.ParagraphTextResponse::class, name = "PARAGRAPH_TEXT"),
     JsonSubTypes.Type(value = Response.EmptyResponse::class, name = "EMPTY"),
 )
 sealed class Response {
@@ -51,6 +52,10 @@ sealed class Response {
 
     data class CheckboxResponse(
         val response: List<String>,
+    ) : Response()
+
+    data class ParagraphTextResponse(
+        val response: String,
     ) : Response()
 
     object EmptyResponse : Response()
