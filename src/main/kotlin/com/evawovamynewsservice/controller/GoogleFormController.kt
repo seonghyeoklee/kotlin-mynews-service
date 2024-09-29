@@ -1,8 +1,11 @@
 package com.evawovamynewsservice.controller
 
 import com.evawovamynewsservice.utils.logger
-import com.fasterxml.jackson.annotation.JsonSubTypes
-import com.fasterxml.jackson.annotation.JsonTypeInfo
+import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.databind.DeserializationContext
+import com.fasterxml.jackson.databind.JsonDeserializer
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -34,17 +37,7 @@ data class FormResult(
     val response: Response,
 )
 
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-)
-@JsonSubTypes(
-    JsonSubTypes.Type(value = Response.TextResponse::class, name = "TEXT"),
-    JsonSubTypes.Type(value = Response.CheckboxResponse::class, name = "CHECKBOX"),
-    JsonSubTypes.Type(value = Response.ParagraphTextResponse::class, name = "PARAGRAPH_TEXT"),
-    JsonSubTypes.Type(value = Response.EmptyResponse::class, name = "EMPTY"),
-)
+@JsonDeserialize(using = ResponseDeserializer::class)
 sealed class Response {
     data class TextResponse(
         val response: String,
@@ -54,9 +47,22 @@ sealed class Response {
         val response: List<String>,
     ) : Response()
 
-    data class ParagraphTextResponse(
-        val response: String,
-    ) : Response()
-
     object EmptyResponse : Response()
+}
+
+// 커스텀 Deserializer 정의
+class ResponseDeserializer : JsonDeserializer<Response>() {
+    override fun deserialize(
+        parser: JsonParser,
+        ctxt: DeserializationContext,
+    ): Response {
+        val node: JsonNode = parser.codec.readTree(parser)
+
+        return when {
+            node.isTextual -> Response.TextResponse(node.asText())
+            node.isArray -> Response.CheckboxResponse(node.map { it.asText() })
+            node.isNull -> Response.EmptyResponse
+            else -> throw IllegalArgumentException("Unknown response type")
+        }
+    }
 }
